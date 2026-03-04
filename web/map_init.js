@@ -2,6 +2,7 @@
 
 let map = null;
 const markers = [];
+const attractionMarkers = [];
 
 const NZ_CENTER = [173.5, -41.5];
 const NZ_ZOOM = 5.5;
@@ -183,6 +184,125 @@ function addMarkers(locations) {
 
     markers.push(marker);
   });
+}
+
+function addAttractionMarkers(locations) {
+  removeAttractionMarkers();
+
+  // Add attraction marker styles if not exists
+  if (!document.getElementById('attraction-marker-styles')) {
+    const style = document.createElement('style');
+    style.id = 'attraction-marker-styles';
+    style.textContent = `
+      @keyframes attraction-pulse {
+        0% { transform: scale(1); opacity: 1; }
+        100% { transform: scale(1.8); opacity: 0; }
+      }
+      .attraction-marker-wrapper:hover .attraction-marker {
+        transform: scale(1.2);
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  locations.forEach(function (loc) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'attraction-marker-wrapper';
+    wrapper.style.cssText = `
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    `;
+
+    const el = document.createElement('div');
+    el.className = 'attraction-marker';
+    el.style.cssText = `
+      width: 28px;
+      height: 28px;
+      min-width: 28px;
+      border-radius: 50%;
+      background: #FBBC05;
+      border: 2.5px solid white;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      position: relative;
+      transition: transform 0.2s ease, background 0.2s ease;
+    `;
+
+    const pulse = document.createElement('div');
+    pulse.style.cssText = `
+      position: absolute;
+      top: -5px;
+      left: -5px;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 2px solid rgba(251, 188, 5, 0.5);
+      animation: attraction-pulse 2s infinite;
+      pointer-events: none;
+    `;
+    el.appendChild(pulse);
+
+    const label = document.createElement('span');
+    label.textContent = loc.name;
+    label.style.cssText = `
+      color: white;
+      font-family: 'Open Sans', Arial, sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.7);
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+    `;
+
+    wrapper.appendChild(el);
+    wrapper.appendChild(label);
+
+    wrapper.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (map && e._markerClick === undefined) {
+        e._markerClick = true;
+      }
+
+      flyToLocation(loc.longitude, loc.latitude, 11);
+
+      if (window._onAttractionClick) {
+        window._onAttractionClick(loc.name);
+      }
+    });
+
+    const marker = new maplibregl.Marker({ element: wrapper, anchor: 'left' })
+      .setLngLat([loc.longitude, loc.latitude])
+      .addTo(map);
+
+    attractionMarkers.push(marker);
+  });
+}
+
+function removeAttractionMarkers() {
+  attractionMarkers.forEach(m => m.remove());
+  attractionMarkers.length = 0;
+}
+
+function enableMapInteraction() {
+  if (!map) return;
+  map.dragPan.enable();
+  map.scrollZoom.enable();
+  map.doubleClickZoom.enable();
+  map.keyboard.enable();
+}
+
+function disableMapInteraction() {
+  if (!map) return;
+  var isMobile = window.innerWidth < 600;
+  if (!isMobile) {
+    map.dragPan.disable();
+    map.scrollZoom.disable();
+    map.doubleClickZoom.disable();
+    map.keyboard.disable();
+  }
 }
 
 function flyToLocation(lng, lat, zoom) {
