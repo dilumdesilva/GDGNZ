@@ -51,3 +51,17 @@ class SelectedAttractionNotifier extends Notifier<Attraction?> {
 
 final attractionsProvider =
     Provider<List<Attraction>>((ref) => nzAttractions);
+
+final splashCompleteProvider =
+    NotifierProvider<SplashCompleteNotifier, bool>(
+  SplashCompleteNotifier.new,
+);
+
+class SplashCompleteNotifier extends Notifier<bool> {
+  @override
+  bool build() => false;
+
+  void complete() {
+    state = true;
+  }
+}

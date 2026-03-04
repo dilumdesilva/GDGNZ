@@ -57,7 +57,6 @@ class _SatelliteMapWidgetState extends ConsumerState<SatelliteMapWidget> {
       if (!mounted) return;
 
       _jsInitMap('maplibre-map'.toJS);
-      _setupMarkers();
       _setupCallbacks();
     });
   }
@@ -119,6 +118,12 @@ class _SatelliteMapWidgetState extends ConsumerState<SatelliteMapWidget> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<bool>(splashCompleteProvider, (prev, next) {
+      if (next && _mapInitialized) {
+        _setupMarkers();
+      }
+    });
+
     ref.listen<GdgLocation?>(selectedLocationProvider, (prev, next) {
       if (!_mapInitialized) return;
       if (next != null) {
@@ -167,6 +172,9 @@ external void _jsAddAttractionMarkers(JSArray<JSObject> locations);
 
 @JS('removeAttractionMarkers')
 external void _jsRemoveAttractionMarkers();
+
+@JS('flyToNZ')
+external void jsFlyToNZ();
 
 @JS('enableMapInteraction')
 external void _jsEnableMapInteraction();

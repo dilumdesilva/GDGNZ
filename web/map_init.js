@@ -49,10 +49,10 @@ function initMap(containerId) {
       },
       sky: {}
     },
-    center: NZ_CENTER,
-    zoom: NZ_ZOOM,
-    pitch: NZ_PITCH,
-    bearing: NZ_BEARING,
+    center: [173.5, -30],
+    zoom: 2,
+    pitch: 0,
+    bearing: 0,
     maxPitch: 85,
     antialias: true,
     attributionControl: false
@@ -313,6 +313,18 @@ function flyToLocation(lng, lat, zoom) {
     pitch: 60,
     bearing: 0,
     duration: 2000,
+    essential: true
+  });
+}
+
+function flyToNZ() {
+  if (!map) return;
+  map.flyTo({
+    center: NZ_CENTER,
+    zoom: NZ_ZOOM,
+    pitch: NZ_PITCH,
+    bearing: NZ_BEARING,
+    duration: 3000,
     essential: true
   });
 }
