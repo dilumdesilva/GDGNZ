@@ -2,6 +2,10 @@
 
 An interactive web experience showcasing Google Developer Group chapters across New Zealand, built with Flutter Web and MapLibre GL JS.
 
+## Preview
+
+<video src="https://raw.githubusercontent.com/dilumdesilva/GDGNZ/main/docs/preview-video.mp4" controls width="600"></video>
+
 ## About
 
 GDG NZ features a 3D satellite map of New Zealand where users can explore GDG chapters in Auckland, Wellington, and Christchurch. Clicking a location pin reveals chapter details including organizers, member count, social links, and a direct link to the chapter page.
