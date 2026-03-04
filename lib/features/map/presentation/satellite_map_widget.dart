@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:web/web.dart' as web;
 
+import '../data/attractions.dart';
 import '../data/locations.dart';
+import '../domain/attraction_model.dart';
 import '../domain/location_model.dart';
 import '../providers/map_providers.dart';
 
@@ -55,7 +57,6 @@ class _SatelliteMapWidgetState extends ConsumerState<SatelliteMapWidget> {
       if (!mounted) return;
 
       _jsInitMap('maplibre-map'.toJS);
-      _setupMarkers();
       _setupCallbacks();
     });
   }
@@ -86,16 +87,63 @@ class _SatelliteMapWidgetState extends ConsumerState<SatelliteMapWidget> {
 
     globalContext['_onMapBackgroundClick'] = (() {
       ref.read(selectedLocationProvider.notifier).select(null);
+      ref.read(selectedAttractionProvider.notifier).select(null);
     }).toJS;
+
+    globalContext['_onAttractionClick'] = ((JSString name) {
+      final attractionName = name.toDart;
+      final attraction = nzAttractions.cast<Attraction?>().firstWhere(
+            (a) => a!.name == attractionName,
+            orElse: () => null,
+          );
+      if (attraction != null) {
+        // Clear GDG selection when attraction is clicked
+        ref.read(selectedLocationProvider.notifier).select(null);
+        ref.read(selectedAttractionProvider.notifier).select(attraction);
+      }
+    }).toJS;
+  }
+
+  void _addAttractionMarkers() {
+    final jsArray = <JSObject>[];
+    for (final attraction in nzAttractions) {
+      final obj = JSObject();
+      obj['name'] = attraction.name.toJS;
+      obj['latitude'] = attraction.latitude.toJS;
+      obj['longitude'] = attraction.longitude.toJS;
+      jsArray.add(obj);
+    }
+    _jsAddAttractionMarkers(jsArray.toJS);
   }
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<bool>(splashCompleteProvider, (prev, next) {
+      if (next && _mapInitialized) {
+        _setupMarkers();
+      }
+    });
+
     ref.listen<GdgLocation?>(selectedLocationProvider, (prev, next) {
       if (!_mapInitialized) return;
       if (next != null) {
+        // Clear attraction selection when GDG location is clicked
+        ref.read(selectedAttractionProvider.notifier).select(null);
         _jsFlyToLocation(next.longitude.toJS, next.latitude.toJS, 11.0.toJS);
       } else if (prev != null) {
+        _jsFlyToOverview();
+      }
+    });
+
+    ref.listen<bool>(showAttractionsProvider, (prev, next) {
+      if (!_mapInitialized) return;
+      if (next) {
+        _addAttractionMarkers();
+        _jsEnableMapInteraction();
+      } else {
+        _jsRemoveAttractionMarkers();
+        _jsDisableMapInteraction();
+        ref.read(selectedAttractionProvider.notifier).select(null);
         _jsFlyToOverview();
       }
     });
@@ -118,3 +166,18 @@ external void _jsFlyToLocation(JSNumber lng, JSNumber lat, JSNumber zoom);
 
 @JS('flyToOverview')
 external void _jsFlyToOverview();
+
+@JS('addAttractionMarkers')
+external void _jsAddAttractionMarkers(JSArray<JSObject> locations);
+
+@JS('removeAttractionMarkers')
+external void _jsRemoveAttractionMarkers();
+
+@JS('flyToNZ')
+external void jsFlyToNZ();
+
+@JS('enableMapInteraction')
+external void _jsEnableMapInteraction();
+
+@JS('disableMapInteraction')
+external void _jsDisableMapInteraction();

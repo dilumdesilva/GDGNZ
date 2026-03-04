@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-const _rotatingWords = ['Kia Ora!', 'Welcome', 'Haere Mai', 'Nau Mai'];
+const _rotatingWords = ['Kia Ora', 'Welcome'];
 
 class HeroTitle extends StatefulWidget {
   const HeroTitle({super.key});
@@ -67,8 +67,8 @@ class _HeroTitleState extends State<HeroTitle> {
             textAlign: TextAlign.center,
             style: GoogleFonts.openSans(
               fontSize: titleSize,
-              fontWeight: FontWeight.w700,
-              color: Colors.black87,
+              fontWeight: FontWeight.w800,
+              color: Colors.white,
             ),
           ),
         ),
@@ -78,8 +78,8 @@ class _HeroTitleState extends State<HeroTitle> {
           textAlign: TextAlign.center,
           style: GoogleFonts.openSans(
             fontSize: subtitleSize,
-            fontWeight: FontWeight.w400,
-            color: Colors.black54,
+            fontWeight: FontWeight.w600,
+            color: Colors.white70,
           ),
         ),
       ],

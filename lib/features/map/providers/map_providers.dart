@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../data/attractions.dart';
 import '../data/locations.dart';
+import '../domain/attraction_model.dart';
 import '../domain/location_model.dart';
 
 final selectedLocationProvider =
@@ -18,3 +20,48 @@ class SelectedLocationNotifier extends Notifier<GdgLocation?> {
 }
 
 final locationsProvider = Provider<List<GdgLocation>>((ref) => gdgLocations);
+
+final showAttractionsProvider =
+    NotifierProvider<ShowAttractionsNotifier, bool>(
+  ShowAttractionsNotifier.new,
+);
+
+class ShowAttractionsNotifier extends Notifier<bool> {
+  @override
+  bool build() => false;
+
+  void toggle(bool value) {
+    state = value;
+  }
+}
+
+final selectedAttractionProvider =
+    NotifierProvider<SelectedAttractionNotifier, Attraction?>(
+  SelectedAttractionNotifier.new,
+);
+
+class SelectedAttractionNotifier extends Notifier<Attraction?> {
+  @override
+  Attraction? build() => null;
+
+  void select(Attraction? attraction) {
+    state = attraction;
+  }
+}
+
+final attractionsProvider =
+    Provider<List<Attraction>>((ref) => nzAttractions);
+
+final splashCompleteProvider =
+    NotifierProvider<SplashCompleteNotifier, bool>(
+  SplashCompleteNotifier.new,
+);
+
+class SplashCompleteNotifier extends Notifier<bool> {
+  @override
+  bool build() => false;
+
+  void complete() {
+    state = true;
+  }
+}
