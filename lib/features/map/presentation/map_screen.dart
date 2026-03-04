@@ -126,19 +126,41 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                 ? Positioned.fill(
                     child: Container(
                       color: Colors.white,
-                      padding: EdgeInsets.only(
-                          top: topPadding + (isMobile ? 80 : 120)),
-                      child: SingleChildScrollView(
-                        child: ChapterDetailCard(
-                          key: ValueKey(selectedLocation.name),
-                          location: selectedLocation,
-                          fullScreen: true,
-                          onDismiss: () {
-                            ref
-                                .read(selectedLocationProvider.notifier)
-                                .select(null);
-                          },
-                        ),
+                      child: Column(
+                        children: [
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.only(
+                              top: topPadding + 16,
+                              bottom: 12,
+                              left: 24,
+                              right: 24,
+                            ),
+                            child: Text(
+                              'Google Developer Groups NZ',
+                              style: GoogleFonts.openSans(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.textPrimary,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: ChapterDetailCard(
+                                key: ValueKey(selectedLocation.name),
+                                location: selectedLocation,
+                                fullScreen: true,
+                                onDismiss: () {
+                                  ref
+                                      .read(
+                                          selectedLocationProvider.notifier)
+                                      .select(null);
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   )
@@ -167,19 +189,41 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                 ? Positioned.fill(
                     child: Container(
                       color: Colors.white,
-                      padding: EdgeInsets.only(
-                          top: topPadding + (isMobile ? 80 : 120)),
-                      child: SingleChildScrollView(
-                        child: AttractionDetailCard(
-                          key: ValueKey(selectedAttraction.name),
-                          attraction: selectedAttraction,
-                          fullScreen: true,
-                          onDismiss: () {
-                            ref
-                                .read(selectedAttractionProvider.notifier)
-                                .select(null);
-                          },
-                        ),
+                      child: Column(
+                        children: [
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.only(
+                              top: topPadding + 16,
+                              bottom: 12,
+                              left: 24,
+                              right: 24,
+                            ),
+                            child: Text(
+                              'Google Developer Groups NZ',
+                              style: GoogleFonts.openSans(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.textPrimary,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: AttractionDetailCard(
+                                key: ValueKey(selectedAttraction.name),
+                                attraction: selectedAttraction,
+                                fullScreen: true,
+                                onDismiss: () {
+                                  ref
+                                      .read(selectedAttractionProvider
+                                          .notifier)
+                                      .select(null);
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   )
