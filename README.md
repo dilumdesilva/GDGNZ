@@ -100,6 +100,10 @@ Location data is defined in `lib/features/map/data/locations.dart`. To add or up
 - Social media links (Facebook, Instagram, Meetup)
 - Cover image (add to `assets/images/`)
 
+## Disclaimer
+
+All chapter data currently displayed (organizer names, member counts, social links, etc.) is **mocked and not accurate**. This will be replaced with real data in a future update.
+
 ## License
 
 This project is maintained by GDG Auckland.
