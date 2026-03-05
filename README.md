@@ -21,10 +21,6 @@ GDG NZ features a 3D satellite map of New Zealand where users can explore GDG ch
 | Layer | Technology |
 |-------|-----------|
 | **Framework** | Flutter Web (Dart SDK ^3.11.0) |
-
-
-
-
 | **State Management** | Riverpod 3.x |
 | **Map Rendering** | MapLibre GL JS 4.7 (open-source, no API key) |
 | **Satellite Imagery** | ESRI World Imagery (free raster tiles) |
