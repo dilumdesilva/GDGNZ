@@ -3,8 +3,8 @@
 An interactive web experience showcasing Google Developer Group chapters across New Zealand, built with Flutter Web and MapLibre GL JS.
 
 ## Preview
+https://github.com/user-attachments/assets/bcd65cfd-1b73-4eb9-bb61-17009929c480
 
-<video src="https://raw.githubusercontent.com/dilumdesilva/GDGNZ/main/docs/preview-video.mp4" controls width="600"></video>
 
 ## About
 
@@ -21,6 +21,10 @@ GDG NZ features a 3D satellite map of New Zealand where users can explore GDG ch
 | Layer | Technology |
 |-------|-----------|
 | **Framework** | Flutter Web (Dart SDK ^3.11.0) |
+
+
+
+
 | **State Management** | Riverpod 3.x |
 | **Map Rendering** | MapLibre GL JS 4.7 (open-source, no API key) |
 | **Satellite Imagery** | ESRI World Imagery (free raster tiles) |
